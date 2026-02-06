@@ -16,11 +16,22 @@ exports.getTransactions = async (req, res) => {
     if (type) filter.type = type;
     if (category) filter.category = category;
     if (division) filter.division = division;
-    if (startDate && endDate) {
-      filter.createdAt = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate),
-      };
+    
+
+    if (startDate || endDate) {
+      const dateFilter = {};
+      if (startDate) {
+        dateFilter.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        dateFilter.$lte = new Date(endDate);
+      }
+      
+  
+      filter.$or = [
+        { datetime: dateFilter },
+        { createdAt: dateFilter }
+      ];
     }
 
     const data = await Transaction.find(filter).sort({ createdAt: -1 });

@@ -5,17 +5,17 @@ const connectDB = require("./config/db");
 
 const app = express();
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 
-// Routes
+
 app.use("/api/transactions", require("./routes/transactions"));
 
-// Server
+
 const PORT = process.env.PORT || 5000;
 
-// Connect Database and start server
+
 const startServer = async () => {
   try {
     await connectDB();
